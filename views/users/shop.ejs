@@ -1,0 +1,177 @@
+<%- include("../layouts/shopHeader") %>
+
+
+<style>
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  /* Add your button styling here */
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  color: #333;
+}
+
+.active {
+  /* Add styles for the active page */
+ 
+  color: #fff;
+}
+
+.btn:hover {
+  /* Add styles for button hover state */
+  background-color: #ddd;
+}
+
+
+.price-filter-inner {
+        display: flex;
+        justify-content: space-between; /* Adjust as needed */
+    }
+
+    .price-button {
+        flex: 1;
+        height: 40px; /* Adjust the height as needed */
+        width: 100%; /* Fill the container width */
+        margin-right: 5px; /* Adjust the margin between buttons as needed */
+        border: 1px solid #ddd;
+    }
+</style>
+
+<section class="mt-50 mb-50">
+    <div class="container">
+        <div class="row flex-row-reverse">
+            <div class="col-lg-9">
+                <div class="shop-product-fillter">
+                    <div class="totall-product">
+                       <% if (locals.count) { %>
+                        <p> We found <strong class="text-brand"><%= locals.count %></strong> items for you!</p>
+                       <% } %>
+                    </div>
+               
+                </div>
+                <div class="row product-grid-3">
+
+
+
+                    <% for (let i = 0; i < product.length; i++) { %>
+                        <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="/productDetails?id=<%=product[i].id%>">
+                                            <img class="default-img" src="/uploads/product-images/<%=product[i].productImage[0]%>" alt="">
+                                            <!-- <img class="hover-img" src="assets/imgs/shop/product-2-2.jpg" alt=""> -->
+                                        </a>
+                                    </div>
+                                 
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">Hot</span>
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap">
+                                   
+                                    <h2><a href="shop-product-right.html"><%= product[i].productName %></a></h2>
+                                    <!-- <div class="rating-result" title="90%">
+                                        <span>
+                                            <span>90%</span>
+                                        </span>
+                                    </div> -->
+                                    <div class="product-price">
+                                        <span>₹<%= product[i].salePrice %></span>
+                                        <span class="old-price">₹<%= product[i].regularPrice %></span>
+                                    </div>
+                                    <div class="product-action-1 show">
+                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="/cart"><i class="fi-rs-shopping-bag-add"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                   <% } %>
+
+
+                </div>
+                
+
+
+
+
+                <% if (totalPages) { %>
+                    <div class="pagination">
+                      <% if (currentPage > 1) { %>
+                        <button class="btn btn-sm"><a href="/shop?page=<%= currentPage - 1 %>">Previous</a></button>
+                      <% } %>
+                  
+                      <% for (let i = 1; i <= totalPages; i++) { %> 
+                        <button class="btn btn-sm <%= i === currentPage ? 'active' : '' %>">
+                          <a href="/shop?page=<%= i %>"><%= i %></a>
+                        </button>
+                      <% } %>
+                  
+                      <% if (currentPage < totalPages) { %>
+                        <button class="btn btn-sm"><a href="/shop?page=<%= currentPage + 1 %>">Next</a></button>
+                      <% } %>
+                    </div>
+                  <% } %>
+                  
+            </div>
+            <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                <div class="widget-category mb-30">
+                    <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
+                    <ul class="categories">
+                        
+                        <% for (let i = 0; i < category.length; i++) { %>
+                            <li><a href="/filter?category=<%= category[i]._id %>"><%= category[i].name %></a></li>
+                        <% } %> 
+
+
+                    </ul>
+                </div>
+
+    
+                <!-- Fillter By Price -->
+                <div class="sidebar-widget price_range range mb-30">
+                    <div class="widget-header position-relative mb-20 pb-10">
+                        <h5 class="widget-title mb-10">Filter by price</h5>
+                        <div class="bt-1 border-color-1"></div>
+                    </div>
+                    <div class="price-filter">
+                        <div class="price-filter-inner">
+                            <form id="price-filter-form">
+                                <div class="price-options">
+                                    <a href="/filterPrice?gt=0&lt=50000"><button type="button" class="price-button" data-value="under-50000">Under ₹50,000</button></a><br>
+                                    <a href="/filterPrice?gt=50000&lt=100000"><button type="button" class="price-button" data-value="50k-to-100k">₹50,000 - ₹100,000</button></a><br>
+                                    <a href="/filterPrice?gt=100000&lt=150000"><button type="button" class="price-button" data-value="100k-to-150k">₹100,000 - ₹150,000</button></a><br>
+                                    <a href="/filterPrice?gt=150000&lt=1000000"><button type="button" class="price-button" data-value="above-150k">Above ₹150,000</button></a>
+                                    <input type="hidden" id="selected-price" name="selected-price" value="">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+         
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+
+
+         
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<%- include("../layouts/footer") %>

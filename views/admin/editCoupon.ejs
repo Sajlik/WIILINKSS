@@ -1,0 +1,38 @@
+<%- include("../layouts/adminHeader") %>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 mt-60">
+            <form method="post" action="/admin/editcoupon/<%= coupon._id %>">
+                
+                <div class="mb-4 mt-30">
+                    <label for="couponCode" class="form-label">Coupon name</label>
+                    <input type="text" name="couponName" value="<%= coupon.name %>" class="form-control border" />
+                </div>
+                
+                <div class="mb-4">
+                  <label for="couponDate" class="form-label">createdOn</label>
+                  <input type="date" name="createdOn" value="<%= coupon.createdOn %>" class="form-control border" />
+              </div>
+                <div class="mb-4">
+                    <label for="couponDate" class="form-label">Expire On</label>
+                    <input type="date" name="expireOn" value="<%= coupon.expireOn %>" class="form-control border" />
+                </div>
+                <div class="mb-4">
+                    <label for="amount" class="form-label">Offer Price</label>
+                    <input type="text" name="offerPrice" value="<%= coupon.offerPrice %>" class="form-control border" />
+                </div>
+                <div class="mb-4">
+                    <label for="minimumPrice" class="form-label">Minimum Price</label>
+                    <input type="text" name="minimumPrice" value="<%= coupon.minimumPrice %>" class="form-control border" />
+                </div>
+                
+                <div class="d-grid text-end mt-30 col-md-5">
+                    <button class="btn btn-primary" type="submit">Update Coupon</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include("../layouts/adminFooter") %>

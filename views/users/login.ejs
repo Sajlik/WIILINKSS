@@ -1,0 +1,122 @@
+<%- include("../layouts/header") %>
+
+    <!DOCTYPE HTML>
+    <html lang="en">
+
+
+    <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-account-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:33 GMT -->
+
+    <head>
+        <meta charset="utf-8">
+        <title>WIILINKS</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="">
+        <meta property="og:type" content="">
+        <meta property="og:url" content="">
+        <meta property="og:image" content="">
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="admin-assets/imgs/theme/favicon.svg">
+        <!-- Template CSS -->
+        <link href="admin-assets/css/main.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+        <main>
+
+            <section class="content-main mt-80 mb-80">
+                <div class="card mx-auto card-login">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Login</h4>
+                        <form method="post" action="/login">
+                            <div class="mb-3 ">
+                                <input class="form-control" name="email" placeholder="Enter email" value="nandanaprasad204@gmail.com" type="text"
+                                    style="border: 1px solid #ced4da;" required>
+                            </div> <!-- form-group// -->
+                            <div class="mb-3" style="position: relative;">
+                                <input class="form-control" name="password" id="password" value="nandu" placeholder="Enter password"
+                                    type="password" style="border: 1px solid #ced4da; padding-right: 30px;" required>
+                                <button id="togglePassword" class="border-0" type="button"
+                                    style="position: absolute; top: 50%; right: 5px; transform: translateY(-50%);">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+
+
+                            <!-- form-group// -->
+                            <div class="mb-3">
+                                <a href="/forgotPassword" class="float-end font-sm text-muted">Forgot password?</a>
+                                <label class="form-check">
+                                    <input type="checkbox" class="form-check-input" checked="">
+
+                                    <span class="form-check-label">Remember</span>
+                                </label>
+                            </div>
+                            <div class="mb-4">
+                                <button type="submit" class="btn btn-primary w-100"> Login </button>
+                            </div>
+                            <!-- Display flash messages -->
+                            <% if (locals.message && message.length> 0) { %>
+                                <div id="alertMessage" class="alert alert-danger">
+                                    <%= message %>
+                                </div>
+                                <% } %>
+                        </form>
+
+                       
+                      
+                        <p class="text-center mb-4">Don't have account? <a href="/signup">Sign up</a></p>
+                    </div>
+                </div>
+            </section>
+
+    </body>
+    <script>
+        // Check if the alert element exists
+        const alertElement = document.getElementById('alertMessage');
+
+        // If the alert element exists, hide it after 3 seconds
+        if (alertElement) {
+            setTimeout(function () {
+                alertElement.style.display = 'none';
+            }, 3000);
+        }
+
+        document.getElementById("togglePassword").addEventListener("click", () => {
+            const passInput = document.getElementById("password");
+            passInput.type = passInput.type === "password" ? "text" : "password";
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+        var form = document.querySelector('form');
+
+        form.addEventListener('submit', function (event) {
+            var emailInput = document.querySelector('input[name="email"]');
+            var passwordInput = document.querySelector('input[name="password"]');
+
+            if (emailInput.value.trim() === '' || passwordInput.value.trim() === '') {
+                // Prevent form submission
+                event.preventDefault();
+
+                // Display an error message (you can customize this part)
+                alert('Please fill in all fields with valid values.');
+
+                // Optionally, you can focus on the first empty input field
+                if (emailInput.value.trim() === '') {
+                    emailInput.focus();
+                } else {
+                    passwordInput.focus();
+                }
+            }
+        });
+    });
+
+    </script>
+
+
+    <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-account-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:33 GMT -->
+
+    </html>
+
+    <%- include("../layouts/footer") %>

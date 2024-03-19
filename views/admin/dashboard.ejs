@@ -1,0 +1,368 @@
+<%- include("../layouts/adminHeader") %>
+
+<div class="input-group mb-3">
+
+</div>
+
+<!-- //flash  -->
+<% if (locals.messages) { %>
+    <% Object.keys(messages).forEach((key) => { %>
+      <% messages[key].forEach((message) => { %>
+        <div class="alert alert-danger alert-dismissible fade show" id="flash-message" role="alert">
+          <strong><%= key === "danger" ? "Error" : key %>!</strong> <%= message %>.
+        </div>
+      <% }) %>
+    <% }) %>
+  <% } %>
+
+
+
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <div class="card text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Sales</h5>
+                    <p class="card-text text-dark">
+                        Total Sales Amount: <br />
+                        <span class="text-success h3">₹ <%= totalSalesAmount %></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+      
+        <div class="col-md-3 mb-3">
+            <div class="card text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">Total Orders</h5>
+                    <p class="card-text text-dark">
+                        Total Orders Count: <br />
+                        <span class="text-success h3">
+                            <%= totalOrderCount %>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Row 1 -->
+    <div class="row" >
+        <!-- Graph -->
+        
+        <div class="container-fluid pt-4 px-4">
+          <div class="row g-4">
+              <div class="col-sm-12 col-xl-12">
+                  <div style="height: 700px; margin-bottom: 30px;" class="bg-light rounded p-4">
+                    <div class="head my-4"><h3>Sales Report</h3> <div class="buttonss"><button type="button" id="weekbtn">Weekly</button><button type="button" id="monthbtn">Monthly</button><button type="button" id="yearbtn">Yearly</button></div></div>
+                        <div id="divchart1"><canvas id="chart1"></canvas></div>
+                        <div id="divchart2" style="display: none;"><canvas id="chart2"></canvas></div>
+                        <div id="divchart3" style="display: none;"><canvas id="chart3"></canvas></div>
+
+
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="container-fluid pt-4 px-4">
+        <div class="bg-light rounded p-4">
+                <h5 class="mb-4">Most purchased products</h5>
+            
+            <div class="table-responsive" id="orderTable">
+                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                    <thead>
+                        <tr class="text-dark">
+                            <th class="text-center" scope="col">SL.No</th>
+                            <th scope="col">Product</th>
+                           
+                            <th class="text-center" scope="col">Price</th>
+                            <th class="text-center" scope="col">Sold Count</th>
+                            <th class="text-center" scope="col">total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <% if (topProducts && topProducts.length > 0) { %>
+                        <% topProducts.forEach((row,index)=> { %>
+                            <tr>
+                                <td class="text-center">
+                                    <%= index+1 %>
+                                </td>
+                                <td>
+                                    <%= row.productName %>
+                                </td>
+                               
+                                <td class="text-center">
+                                    <%= row.productPrice %>
+                                </td>
+                                <td class="text-center">
+                                    <%= row.totalQuantity %>
+                                </td>
+                                <td class="text-center">
+                                    <%= row.totalProductPrice %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                            <% } else { %>
+                              <tr>
+                                  <td colspan="6" class="text-center">No products found</td>
+                              </tr>
+                          <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid pt-4 px-4">
+      <div class="bg-light rounded p-4">
+          <h5 class="mb-4">Most purchased category</h5>
+          <div class="table-responsive" id="orderTable">
+              <table class="table text-start align-middle table-bordered table-hover mb-0">
+                  <thead>
+                      <tr class="text-dark">
+                          <th class="text-center" scope="col">SL.No</th>
+                          <th scope="col">Category</th>
+                          <th class="text-center" scope="col">Total Quantity</th>
+                          <th class="text-center" scope="col">Total Amount</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <% if (topCategories && topCategories.length > 0) { %>
+                          <% topCategories.forEach((category, index) => { %>
+                              <tr>
+                                  <td class="text-center"><%= index + 1 %></td>
+                                  <td><%= category.name %></td>
+                                  <td class="text-center"><%= category.totalQuantity %></td>
+                                  <td class="text-center"><%= category.totalProductPrice %></td>
+                              </tr>
+                          <% }) %>
+                      <% } else { %>
+                          <tr>
+                              <td colspan="4" class="text-center">No category found</td>
+                          </tr>
+                      <% } %>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+        <!-- Graph End -->
+        <!-- <div class="col-lg-4 d-flex align-items-stretch ">
+            <div class="card w-100" >
+                <div class="card-body p-4 " >
+                    <div class="mb-4 d-flex justify-content-between">
+                        <h5 class="mb-0">Recent Sales</h5>
+                        <a href="/admin/orders" class="">View All</a>
+                    </div>
+                    <div class="card-body">
+                        <% recentOrders.forEach(order=> { %>
+                            <div class="media mb-3">
+                                <img src="<%= order?.user?.image || "/assets/imgs/page/avaz.png" %>"
+                                    class="mr-3 rounded-circle" alt="User Image" style="width: 60px" />
+                                <div class="media-body">
+                                    <h5 class="mt-0">
+                                        <%= order?.user?.firstName %>
+                                    </h5>
+                                    <small>
+                                        <% var orderedMoment=moment(order.orderedDate); var now=moment(); if
+                                            (now.diff(orderedMoment, 'minutes' ) < 1) { %> Just now <% } else { %>
+                                                <%= orderedMoment.fromNow() %>
+                                                    <% } %>
+                                    </small>
+                                </div>
+                                <p class="mb-0 text-success">₹ <%= order?.totalPrice?.toFixed(2) %>
+                                </p>
+                            </div>
+                            <% }) %>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        const weekbtn = document.getElementById('weekbtn')
+        const monthbtn = document.getElementById('monthbtn')
+        const yearbtn = document.getElementById('yearbtn')
+        const divchart1 = document.getElementById('divchart1')
+        const divchart2 = document.getElementById('divchart2')
+        const divchart3 = document.getElementById('divchart3')
+
+        let weekvalues = []
+        let monthNames = []
+        let monthValues = []
+        let yearHeads = []
+        let yearValues = []
+    async function getGraphData(){
+            try {
+                const res = await fetch(`/admin/getgraphweek`)
+                const data = await res.json()
+                if(data)
+                {
+                    console.log("Week")
+                    console.log(data)
+                    weekvalues = data.weekData
+                    WeekChart()
+                }
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+        getGraphData()
+function WeekChart(){
+      const ctx = document.getElementById("chart1");
+
+  let Chart1 = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+      datasets: [
+        {
+          label: "Earnings in Week",
+          data: weekvalues,
+          borderWidth: 1,
+          backgroundColor: "#ff3f00",
+          borderColor: "#ff3f00",
+          color: "#ff3f00",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+    },
+  });
+}
+weekbtn.addEventListener('click',()=>{
+    divchart1.style.display = 'block'
+    if(divchart2){
+        divchart2.style.display = 'none'
+    }
+    if(divchart3){
+        divchart3.style.display = 'none'
+    }
+    getGraphData()
+})
+monthbtn.addEventListener('click',()=>{
+    divchart2.style.display = 'block'
+    if(divchart1){
+        divchart1.style.display = 'none'
+    }
+    if(divchart3){
+        divchart3.style.display = 'none'
+    }
+    monthReport()
+})
+yearbtn.addEventListener('click',()=>{
+    divchart3.style.display = 'block'
+    if(divchart2){
+        divchart2.style.display = 'none'
+    }
+    if(divchart1){
+        divchart1.style.display = 'none'
+    }
+    yearReport()
+})
+
+async function monthReport() {
+  try {
+    console.log("monthreport");
+    const res = await fetch("/admin/getgraphmonth");
+    const data = await res.json();
+    if (data.monthdata) {
+
+      console.log(data.monthdata);
+      for (let i = 0; i < data.monthdata.length; i++) {
+        monthNames.push(data.monthdata[i].month);
+        monthValues.push(data.monthdata[i].amount);
+      }
+      monthChart();
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+async function yearReport() {
+  try {
+    console.log("yearreport");
+    const res = await fetch("/admin/getgraphyear");
+    const data = await res.json();
+    if (data.yeardata) {
+        console.log(data.yeardata)
+      for (let i = 0; i < data.yeardata.length; i++) {
+        yearHeads.push(data.yeardata[i].year);
+        yearValues.push(data.yeardata[i].amount);
+      }
+      yearChart();
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+function monthChart(){
+    const ctx1 = document.getElementById("chart2");
+
+  let Chart2 = new Chart(ctx1, {
+    type: "line",
+    data: {
+      labels: monthNames,
+      datasets: [
+        {
+          label: "Earnings in Month",
+          data: monthValues,
+          borderWidth: 1,
+          backgroundColor: "#ff3f00",
+          borderColor: "#ff3f00",
+          color: "#ff3f00",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+    },
+  });
+}
+
+function yearChart(){
+    const ctx2 = document.getElementById("chart3");
+
+  let Chart3 = new Chart(ctx2, {
+    type: "line",
+    data: {
+      labels: yearHeads,
+      datasets: [
+        {
+          label: "Earnings in Year",
+          data: yearValues,
+          borderWidth: 1,
+          backgroundColor: "#ff3f00",
+          borderColor: "#ff3f00",
+          color: "#ff3f00",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+    },
+  });
+}
+    </script>
+     <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script> -->
+<!-- 
+        <script src="/static/error/lib/easing/easing.min.js"></script>
+        <script src="/static/error/lib/waypoints/waypoints.min.js"></script>
+        <script src="/static/error/lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="/static/error/lib/tempusdominus/js/moment.min.js"></script>
+        <script src="/static/error/lib/tempusdominus/js/moment-timezone.min.js"></script>
+        <script src="/static/error/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+        <script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script> -->
+        <!-- <script src="/static/error/js/main.js"></script>
+        <script src="/static/admin/dashboard.js"></script> -->
+
+        
+        
+        <%- include('../layouts/adminFooter') %>
+   
+  
+  
+    
